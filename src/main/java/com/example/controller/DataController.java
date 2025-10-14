@@ -9,6 +9,8 @@ import com.example.model.db1.User;
 import com.example.model.db2.Product;
 import com.example.service.DataService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class DataController {
     private final DataService dataService;
@@ -24,10 +26,10 @@ public class DataController {
     }
 
     @PostMapping("/users/add")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
+    	System.out.println("Received user: " + user.getName());
         return ResponseEntity.ok(dataService.saveUser(user));
     }
-
     @PostMapping("/products/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         return ResponseEntity.ok(dataService.saveProduct(product));
