@@ -25,7 +25,7 @@ public class MultipleDataSourceConfig {
     // Primary DataSource Configuration
     @Primary
     @Bean(name = "primaryDataSource")
-    @ConfigurationProperties(prefix = "spring.db1.datasource")
+  @ConfigurationProperties(prefix = "spring.db1.datasource")
     public DataSource primaryDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -84,7 +84,7 @@ public class MultipleDataSourceConfig {
             @Qualifier("secondaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
-    @Bean
+  /*  @Bean
     public CommandLineRunner testDataSources(
         @Qualifier("primaryDataSource") DataSource ds1,
         @Qualifier("secondaryDataSource") DataSource ds2
@@ -93,5 +93,5 @@ public class MultipleDataSourceConfig {
             System.out.println(" DB1 URL: " + ds1.getConnection().getMetaData().getURL());
             System.out.println(" DB2 URL: " + ds2.getConnection().getMetaData().getURL());
         };
-}
+}*/
 }

@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import java.util.*;
-import org.springframework.beans.factory.annotation.*;
+
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,26 +15,25 @@ import jakarta.validation.Valid;
 public class DataController {
     private final DataService dataService;
 
-    @Autowired
+    
     public DataController(DataService dataService) {
         this.dataService = dataService;
     }
-
-    @GetMapping("/api/ping")
-    public String ping() {
-        return "pong";
-    }
-
     @PostMapping("/users/add")
     public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-    	System.out.println("Received user: " + user.getName());
-        return ResponseEntity.ok(dataService.saveUser(user));
-    }
+    	System.out.println("received mob no  :-" +user.getMobileNo());
+if(user.getName()==null) {
+	System.out.println("user name should not be null");
+	return ResponseEntity.noContent().build();
+}
+else {
+	System.out.println("Received user: " + user.getName());
+    	return ResponseEntity.ok(dataService.saveUser(user));
+    }}
     @PostMapping("/products/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
     	System.out.println("received product  :- " + product.getName());
-    	
-    	        return ResponseEntity.ok(dataService.saveProduct(product));
+    	return ResponseEntity.ok(dataService.saveProduct(product));
     }
 
     @GetMapping("/users")
