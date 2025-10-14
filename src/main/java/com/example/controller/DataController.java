@@ -32,7 +32,9 @@ public class DataController {
     }
     @PostMapping("/products/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        return ResponseEntity.ok(dataService.saveProduct(product));
+    	System.out.println("received product  :- " + product.getName());
+    	
+    	        return ResponseEntity.ok(dataService.saveProduct(product));
     }
 
     @GetMapping("/users")
