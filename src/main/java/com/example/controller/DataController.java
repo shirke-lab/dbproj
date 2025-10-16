@@ -20,16 +20,31 @@ public class DataController {
         this.dataService = dataService;
     }
     @PostMapping("/users/add")
-    public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
+    public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
     	System.out.println("received mob no  :-" +user.getMobileNo());
-if(user.getName()==null) {
-	System.out.println("user name should not be null");
-	return ResponseEntity.noContent().build();
+if(user.getName()==null || user.getMobileNo()==null) {
+	System.out.println("user name and mobile no should not be null");
+	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("null values not acceptable");
+}
+int mobSize=user.getMobileNo().length();
+if(mobSize!=10) {
+	return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("mobile no should be 10 digits"); 
 }
 else {
 	System.out.println("Received user: " + user.getName());
     	return ResponseEntity.ok(dataService.saveUser(user));
     }}
+    @DeleteMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable Long id){
+    	    	 dataService.deleteUser(id);
+  	 
+    	 return "user deleted successfully";
+    
+    
+    
+    }
+    
+    
     @PostMapping("/products/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
     	System.out.println("received product  :- " + product.getName());

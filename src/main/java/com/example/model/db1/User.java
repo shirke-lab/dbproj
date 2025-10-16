@@ -26,7 +26,7 @@ public class User {
    private String mobileNo;
 
    // Getters and Setters
-public String getName() {
+public  String getName() {
 	return name;
 }
 public String getMobileNo() { 
