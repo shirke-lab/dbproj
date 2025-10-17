@@ -23,9 +23,9 @@ public class DataService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
-public void deleteUser(Long id) {
-	Long uid=id;
-	User userId=userRepository.findById(uid).orElseThrow(()->new RuntimeException ("user id not Found"));
+public void deleteUser(Long uid) {
+	
+	userRepository.findById(uid).orElseThrow(()->new RuntimeException ("user id not Found"));
 		 userRepository.deleteById(uid);
 		 System.out.println("user is deleted  :-" +user.getName());
 	}
@@ -34,23 +34,26 @@ public void deleteUser(Long id) {
     
     public User saveUser(User user) {
      String mobno= user.getMobileNo(); 
-     System.out.println(mobno);
+//     System.out.println(mobno);
      String mobil=String.valueOf(mobno);
-     System.out.println(mobil);
+//     System.out.println(mobil);
     	if( mobil.length()!=10) {
-    		System.out.println("number should be 10 digits");
-    		return null;
+    		//System.out.println("number should be 10 digits");
+    		throw new IllegalArgumentException("mobile no. should be 10 digits");
+    //		return null;  this line is not usable after throwing exception
     	}
-    	else{
-    		System.out.println( "correct size");}
+
     	Optional<?> mob=  userRepository.findBymobileNo(mobil);	
-if(mob.isEmpty()) {
-	System.out.println("we are adding this user");
-}
-if(mob.isPresent()) {
-	System.out.println("mobile no is already exist");
-	return null;
-}
+    		if(mob.isEmpty()) 
+    		{
+    			System.out.println("we are adding this user");
+    		}
+    		if(mob.isPresent()) 
+    		{
+    			//System.out.println("mobile no is already exist");
+    			throw new IllegalStateException("mobile no. is already exist");
+    			//return null;
+    		}
     	// String message=mob.isPresent() ? "mobile no. is already Exist" : "we  are adding this user";
 //    	System.out.println(message);
 
