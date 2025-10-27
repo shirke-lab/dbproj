@@ -8,6 +8,4 @@ public class DbprojApplication {
 // this program is uploaded on git
 	public static void main(String[] args) {
 		SpringApplication.run(DbprojApplication.class, args);
-	}
-
-}
+	}}

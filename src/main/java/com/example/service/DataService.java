@@ -3,8 +3,8 @@ package com.example.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.*;
-
 import com.example.db1.repository.*;
 import com.example.db2.repository.ProductRepository;
 import com.example.model.db2.Product;
@@ -16,7 +16,10 @@ public class DataService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-  User user=new User();//we cant autowire model entities. so, we can create object of that class and then we can use it.
+    @Autowired
+    PasswordEncoder passwordEncoder;
+  
+    User user=new User();//we cant autowire model entities. so, we can create object of that class and then we can use it.
   
     
     public DataService(UserRepository userRepository, ProductRepository productRepository) {
@@ -56,7 +59,7 @@ public void deleteUser(Long uid) {
     		}
     	// String message=mob.isPresent() ? "mobile no. is already Exist" : "we  are adding this user";
 //    	System.out.println(message);
-
+    		 user.setPassword(passwordEncoder.encode(user.getPassword()));
     	return userRepository.save(user);
     }
 

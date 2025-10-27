@@ -1,10 +1,8 @@
 package com.example.controller;
 
 import java.util.*;
-
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-
 import com.example.model.db1.User;
 import com.example.model.db2.Product;
 import com.example.service.DataService;
@@ -40,16 +38,17 @@ else {
   	 
     	 return "user deleted successfully";
     
-    
-    
-    }
-    
-    
+    }    
     @PostMapping("/products/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
     	System.out.println("received product  :- " + product.getName());
     	return ResponseEntity.ok(dataService.saveProduct(product));
     }
+    
+//    @GetMapping("/users/all")
+//    public Page<User> getUsersPaged(@RequestParam int page, @RequestParam int size) {
+//        return UserRepository.findAll(PageRequest.of(page, size, Sort.by("name")));
+//    }
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {

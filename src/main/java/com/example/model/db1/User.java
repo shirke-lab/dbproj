@@ -4,14 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 public class User {
     @Id
@@ -24,7 +17,10 @@ public class User {
    @NotBlank
    @Size(min=10, max=10, message="mobile no. must be exactly 10 digits")
    private String mobileNo;
-
+   @Column(unique = true, nullable = false)
+   private String userid;
+   private String password;
+   
    // Getters and Setters
 public  String getName() {
 	return name;
@@ -32,5 +28,54 @@ public  String getName() {
 public String getMobileNo() { 
 	return mobileNo;
 }
-
+public String getUserid() {
+	return userid;
 }
+public void setUserid(String userid) {
+	this.userid = userid;
+}
+public String getPassword() {
+	return password;
+}
+public void setPassword(String password) {
+	this.password = password;
+}
+public static class LoginRequest {
+	@Column(unique = true, nullable = false)
+	private String userid;
+    private String password;
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}
+
+public static class JwtResponse {
+    private String token;
+
+    public JwtResponse(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+}
+}
+
