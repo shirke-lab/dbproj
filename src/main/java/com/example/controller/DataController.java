@@ -2,13 +2,15 @@ package com.example.controller;
 
 import java.util.*;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 import com.example.model.db1.User;
 import com.example.model.db2.Product;
 import com.example.service.DataService;
 
 import jakarta.validation.Valid;
-
+@EnableMethodSecurity
 @RestController
 public class DataController {
     private final DataService dataService;
@@ -17,8 +19,9 @@ public class DataController {
     public DataController(DataService dataService) {
         this.dataService = dataService;
     }
+    @PreAuthorize("hasRole('admin')")
     @PostMapping("/users/add")
-    public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
+     public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
     	System.out.println("received mob no  :-" +user.getMobileNo());
 if(user.getName()==null || user.getMobileNo()==null) {
 	System.out.println("user name and mobile no should not be null");
@@ -33,6 +36,7 @@ else {
     	return ResponseEntity.ok(dataService.saveUser(user));
     }}
     @DeleteMapping("/users/delete/{id}")
+    @PreAuthorize("hasrole('admin')")
     public String deleteUser(@PathVariable Long id){
     	    	 dataService.deleteUser(id);
   	 

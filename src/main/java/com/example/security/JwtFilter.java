@@ -1,20 +1,21 @@
 package com.example.security;
 
 import java.io.IOException;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.example.util.JwtUtili;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public abstract class JwtFilter extends OncePerRequestFilter{
+public  class JwtFilter extends OncePerRequestFilter{
 	   @Autowired
 	    private JwtUtili jwtUtil;
 	
@@ -29,10 +30,12 @@ public abstract class JwtFilter extends OncePerRequestFilter{
 
 	        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 	            if (jwtUtil.validateToken(token, userName)) {
-	                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userName, null, null);
-	                SecurityContextHolder.getContext().setAuthentication(authToken);
-	            }
+	            
+	            	List<GrantedAuthority> authorities = jwtUtil.extractAuthorities(token);
+	            	UsernamePasswordAuthenticationToken authToken =
+	            	    new UsernamePasswordAuthenticationToken(userName, null, authorities);
+	            	SecurityContextHolder.getContext().setAuthentication(authToken); }
 	        }
 	        filterchain.doFilter(request, response);
 	    }
-	}	
+		}	

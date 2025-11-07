@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Appenders>
+    <!-- Console output -->
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+
+    <!-- Info log file -->
+    <File name="InfoFile" fileName="C:/Users/Suraj/Documents/dbproj/logs/info.log">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+      <Filters>
+        <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+      </Filters>
+    </File>
+
+    <!-- Error log file -->
+    <File name="ErrorFile" fileName="logs/error.log">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+      <Filters>
+        <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+      </Filters>
+    </File>
+  </Appenders>
+
+  <Loggers>
+    <Logger name="com.example" level="info" additivity="false">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="InfoFile"/>
+      <AppenderRef ref="ErrorFile"/>
+    </Logger>
+
+    <Root level="error">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>

@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,11 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
     	System.out.println("user id is "+loginRequest.getUserid() );
         Optional<User> user = userrepo.findByUserid(loginRequest.getUserid());
-
+        String rawRole = user.get().getRole(); // e.g., "admin"
+        String roleWithPrefix = rawRole.startsWith("ROLE_") ? rawRole : "ROLE_" + rawRole;
+        String token = jwtutil.generateToken(user.get().getUserid(), List.of(roleWithPrefix));
         if (user.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())) {
-            String token = jwtutil.generateToken(user.get().getUserid());
+    //        String token = jwtutil.generateToken(user.get().getUserid(), List.of(user.get().getRole()));
             return ResponseEntity.ok(new JwtResponse(token));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");

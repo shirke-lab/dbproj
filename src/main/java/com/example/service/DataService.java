@@ -2,6 +2,8 @@ package com.example.service;
 
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.*;
@@ -15,6 +17,8 @@ import com.example.model.db1.User;
 public class DataService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+private static final Logger userlog=LogManager.getLogger(DataService.class);
+private static final Logger productlog=LogManager.getLogger(DataService.class);
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -31,7 +35,8 @@ public void deleteUser(Long uid) {
 	userRepository.findById(uid).orElseThrow(()->new RuntimeException ("user id not Found"));
 		 userRepository.deleteById(uid);
 		 System.out.println("user is deleted  :-" +user.getName());
-	}
+userlog.info("deleting user : {}", user.getName(),user.getMobileNo());
+}
 	
 
     
@@ -42,19 +47,23 @@ public void deleteUser(Long uid) {
 //     System.out.println(mobil);
     	if( mobil.length()!=10) {
     		//System.out.println("number should be 10 digits");
+    		userlog.warn("mobile no not matching criteria: {}", user.getMobileNo());
     		throw new IllegalArgumentException("mobile no. should be 10 digits");
     //		return null;  this line is not usable after throwing exception
     	}
 
     	Optional<?> mob=  userRepository.findBymobileNo(mobil);	
     		if(mob.isEmpty()) 
+    			
     		{
     			System.out.println("we are adding this user");
     		}
     		if(mob.isPresent()) 
     		{
+    			userlog.info("mobile no is found :{}", user.getMobileNo());
     			//System.out.println("mobile no is already exist");
     			throw new IllegalStateException("mobile no. is already exist");
+    			
     			//return null;
     		}
     	// String message=mob.isPresent() ? "mobile no. is already Exist" : "we  are adding this user";
@@ -64,6 +73,7 @@ public void deleteUser(Long uid) {
     }
 
     public Product saveProduct(Product product) {
+    	productlog.info("saved product : {}", product.getName());
         return productRepository.save(product);
     }
 

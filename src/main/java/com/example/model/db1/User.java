@@ -20,10 +20,13 @@ public class User {
    @Column(unique = true, nullable = false)
    private String userid;
    private String password;
-   
+   private String role;
    // Getters and Setters
 public  String getName() {
 	return name;
+}
+public String getRole() {
+	return role;
 }
 public String getMobileNo() { 
 	return mobileNo;
